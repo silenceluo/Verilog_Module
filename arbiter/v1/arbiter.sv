@@ -1,10 +1,10 @@
 //Rotate -> Priority -> Rotate
 //author: dongjun_luo@hotmail.com
-module round_robin_arbiter (
-    input logic         rst_n;
-    input logic	        clk;
-    input logic	[3:0]	req;
-    output logic [3:0]	grant;
+module arbiter (
+    input logic         rst_n,
+    input logic	        clk,
+    input logic	[3:0]	req,
+    output logic [3:0]	grant
 );
 
 reg	[1:0]	rotate_ptr;
