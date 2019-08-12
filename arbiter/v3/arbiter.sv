@@ -1,27 +1,22 @@
 //Using Two Simple Priority Arbiters with a Mask - scalable
 //author: dongjun_luo@hotmail.com
-module arbiter (
-	rst_n,
-	clk,
-	req,
-	grant
+module arbiter #(   parameter N = 4 ) (
+	input logic         rst_n,
+	input logic         lk,
+	input logic [N-1:0]	req,
+	input logic [N-1:0]	grant
 );
 
-parameter N = 4;
 
-input		rst_n;
-input		clk;
-input	[N-1:0]	req;
-output	[N-1:0]	grant;
+logic	[N-1:0]	    rotate_ptr;
+logic	[N-1:0]	    mask_req;
+logic	[N-1:0]	    mask_grant;
+logic	[N-1:0]	    grant_comb;
+logic	[N-1:0]	    grant;
+logic		        no_mask_req;
+logic	[N-1:0]     nomask_grant;
+logic		        update_ptr;
 
-reg	[N-1:0]	rotate_ptr;
-wire	[N-1:0]	mask_req;
-wire	[N-1:0]	mask_grant;
-wire	[N-1:0]	grant_comb;
-reg	[N-1:0]	grant;
-wire		no_mask_req;
-wire	[N-1:0] nomask_grant;
-wire		update_ptr;
 genvar i;
 
 // rotate pointer update logic
