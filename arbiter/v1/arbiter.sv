@@ -51,6 +51,7 @@ end
 
 // update the rotate pointer
 // rotate pointer will move to the one after the current granted
+/*
 always @ (posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         rotate_ptr[1:0] <= 2'b0;
@@ -63,4 +64,16 @@ always @ (posedge clk or negedge rst_n) begin
         endcase
     end
 end
+*/
+
+always_comb begin
+    rotate_ptr[1:0] = 2'b0;
+    case (1'b1) // synthesis parallel_case
+        grant[0]: rotate_ptr[1:0] = 2'd1;
+        grant[1]: rotate_ptr[1:0] = 2'd2;
+        grant[2]: rotate_ptr[1:0] = 2'd3;
+        grant[3]: rotate_ptr[1:0] = 2'd0;
+    endcase
+end
+
 endmodule
