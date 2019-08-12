@@ -1,4 +1,5 @@
-/arbiter/v1/vivado
-/arbiter/v2/vivado
-/arbiter/v3/vivado
-/arbiter/v4/vivado
+arbiter/v1/vivado
+arbiter/v2/vivado
+arbiter/v3/vivado
+arbiter/v4/vivado
+fifo/async_fifo/vivado
