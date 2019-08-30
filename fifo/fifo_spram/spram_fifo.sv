@@ -19,6 +19,8 @@ module spram_fifo #(DATA_WIDTH  = 8,
 logic [ADDR_WIDTH-1:0]    waddr;
 logic [ADDR_WIDTH-1:0]    raddr;
 
+logic [ADDR_WIDTH-1:0]    raddr_r1;
+
 logic [ADDR_WIDTH-1:0]    next_waddr;
 logic [ADDR_WIDTH-1:0]    next_raddr;
 
@@ -50,9 +52,13 @@ always_ff @(posedge clk or negedge rst_n) begin
     if( ~rst_n) begin
         raddr   <= 0;
         waddr   <= 0;
+        
+        raddr_r1    <= 0;
     end else begin
         raddr   <= next_raddr;
         waddr   <= next_waddr;
+        
+        raddr_r1    <= raddr;
     end
 end
 
@@ -131,7 +137,7 @@ always_comb begin
         mem1_ren                    = 0;
         mem1_raddr[ADDR_WIDTH-1:0]  = 0;  
         
-        rdata                       = mem0_dout;  
+       // rdata                       = mem0_dout;  
     end else if(raddr[0] == 1) begin
         mem0_ren                    = 0;
         mem0_raddr[ADDR_WIDTH-2:0]  = 0;
@@ -139,9 +145,13 @@ always_comb begin
         mem1_ren                    = reading;
         mem1_raddr[ADDR_WIDTH-1:0]  = raddr[ADDR_WIDTH-1:1]; 
         
-        rdata                       = mem1_dout;  
+        //rdata                       = mem1_dout;  
     end
+    
+    rdata = raddr_r1[0] ? mem0_dout : mem1_dout;
 end
+
+
 
 fifo_bank #(    .DATA_WIDTH ( DATA_WIDTH ),
                 .FIFO_DEPTH ( FIFO_DEPTH/2 )

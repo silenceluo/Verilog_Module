@@ -40,6 +40,7 @@ module testbench;
     wdata = 0;
         
     #15 rst_n = 1; 
+    #5;
     #10 wen = 1; wdata = 10;
     #10 wen = 1; wdata = 11;
     #10 wen = 1; wdata = 12;
