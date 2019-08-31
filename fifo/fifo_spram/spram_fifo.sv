@@ -7,10 +7,12 @@ module spram_fifo #(DATA_WIDTH  = 8,
     input logic                     ren,
     output logic [DATA_WIDTH-1:0]   rdata, 
     output logic                    empty,
-
+    output logic                    rvalid,
+    
     input logic                     wen,
     input logic [DATA_WIDTH-1:0]    wdata,    
     output logic                    full,
+
     
     output logic [ADDR_WIDTH-1:0]   count 
 );
@@ -19,10 +21,10 @@ module spram_fifo #(DATA_WIDTH  = 8,
 logic [ADDR_WIDTH-1:0]    waddr;
 logic [ADDR_WIDTH-1:0]    raddr;
 
-logic [ADDR_WIDTH-1:0]    raddr_r1;
-
 logic [ADDR_WIDTH-1:0]    next_waddr;
 logic [ADDR_WIDTH-1:0]    next_raddr;
+
+
 
 logic writing, reading;
 
@@ -51,14 +53,10 @@ end
 always_ff @(posedge clk or negedge rst_n) begin
     if( ~rst_n) begin
         raddr   <= 0;
-        waddr   <= 0;
-        
-        raddr_r1    <= 0;
+        waddr   <= 0;       
     end else begin
         raddr   <= next_raddr;
         waddr   <= next_waddr;
-        
-        raddr_r1    <= raddr;
     end
 end
 
@@ -90,6 +88,21 @@ always_ff @(posedge clk or negedge rst_n) begin
         count <= count+1;
     end else if (reading && !writing) begin
         count <= count-1;
+    end
+end
+
+logic [ADDR_WIDTH-1:0]  raddr_r1;
+logic                   ren_r1;
+
+
+
+always_ff @(posedge clk or negedge rst_n) begin
+    if( ~rst_n) begin
+        {rvalid, ren_r1}    <= 0;        
+        raddr_r1            <= 0;
+    end else begin
+        {rvalid, ren_r1}    <= {ren_r1, ren};
+        raddr_r1            <= raddr;
     end
 end
 
@@ -148,7 +161,7 @@ always_comb begin
         //rdata                       = mem1_dout;  
     end
     
-    rdata = raddr_r1[0] ? mem0_dout : mem1_dout;
+    rdata = rvalid ? (raddr_r1[0] ? mem0_dout : mem1_dout) : 0;
 end
 
 
