@@ -1,0 +1,5 @@
+b3636605a8fc6b3f9739b0c0ea1cb07a32ff90d6
+    This version use Xilix MEM IP, and the output delay is 2 cycles
+    
+5a66a292dc4a80237799f502cbd7cb52514447ed
+    This version changes to write mem with flops and delay is 1 cycle
