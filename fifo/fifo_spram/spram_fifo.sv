@@ -91,17 +91,19 @@ always_ff @(posedge clk or negedge rst_n) begin
     end
 end
 
+
 logic [ADDR_WIDTH-1:0]  raddr_r1;
-logic                   ren_r1;
+logic                   rvalid;
+
 
 
 
 always_ff @(posedge clk or negedge rst_n) begin
     if( ~rst_n) begin
-        {rvalid, ren_r1}    <= 0;        
+        rvalid              <= 0;       
         raddr_r1            <= 0;
     end else begin
-        {rvalid, ren_r1}    <= {ren_r1, ren};
+        rvalid              <= ren & (~empty);
         raddr_r1            <= raddr;
     end
 end
@@ -161,7 +163,7 @@ always_comb begin
         //rdata                       = mem1_dout;  
     end
     
-    rdata = rvalid ? (raddr_r1[0] ? mem0_dout : mem1_dout) : 0;
+    rdata = rvalid ? (raddr[0] ? mem0_dout : mem1_dout) : 0;
 end
 
 
