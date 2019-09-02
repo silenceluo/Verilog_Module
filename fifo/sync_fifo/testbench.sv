@@ -17,18 +17,18 @@ module testbench;
     logic [ADDR_WIDTH-1:0]  count; 
     
     fifo U0( 
-            .clk,
-            .rst_n,
+            .clk    (clk),
+            .rst_n  (rst_n),
 
-            .ren,
-            .rdata, 
-            .empty,
+            .ren    (ren),
+            .rdata  (rdata), 
+            .empty  (empty),
 
-            .wen,
-            .wdata,    
-            .full,
+            .wen    (wen),
+            .wdata  (wdata),    
+            .full   (full),
 
-            .count 
+            .count  (count)
         );
 
 

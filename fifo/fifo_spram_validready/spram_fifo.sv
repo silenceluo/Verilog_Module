@@ -34,6 +34,7 @@ logic                   bank1_out_ready;
 
 logic   in_sel, in_sel_next;
 logic   out_sel, out_sel_next;
+logic   out_sel_r1;
 
 logic   bank0_in_exec;
 logic   bank0_out_exec;
@@ -69,19 +70,35 @@ always_comb begin
     end
     
     if(out_sel == 0) begin
-        out_data    = bank0_out_data;
-        out_valid   = bank0_out_valid;
+//        out_data    = bank0_out_data;
+//        out_valid   = bank0_out_valid;
         
         bank0_out_ready = out_ready; 
         bank1_out_ready = 0; 
     end else begin
-        out_data    = bank1_out_data;
-        out_valid   = bank1_out_valid;
+//        out_data    = bank1_out_data;
+//        out_valid   = bank1_out_valid;
             
         bank0_out_ready = 0; 
         bank1_out_ready = out_ready; 
     end
+    
+    out_data = out_sel_r1 ? bank1_out_data : bank0_out_data;
 end
+
+// Out valid will be delayed for one cycle, as there is a flop at output of mem
+always_ff @(posedge clk or negedge rst_n) begin
+    if(~rst_n) begin
+        out_valid <= 0;    
+    end else begin
+        if(out_sel == 0) begin
+            out_valid <= bank0_out_valid;
+        end else if(out_sel == 1) begin
+            out_valid <= bank1_out_valid;
+        end 
+    end     
+end
+
 
 always_comb begin
     if(in_sel == 0) begin
@@ -110,9 +127,13 @@ always_ff @(posedge clk or negedge rst_n) begin
     if(~rst_n) begin
         in_sel  <= 0;
         out_sel <= 0;
+        
+        out_sel_r1  <= 0;
     end else begin
         in_sel  <= in_sel_next;
         out_sel <= out_sel_next;
+        
+        out_sel_r1  <= out_sel;
     end
 end
 

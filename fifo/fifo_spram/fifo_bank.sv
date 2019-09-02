@@ -60,7 +60,7 @@ blk_mem_gen_0 U0 (
 */
 spram U0(
     .clk      ( clk     ),
-    .ena      ( rst_n   ),
+    .rst_n    ( rst_n   ),
     .wea      ( mem_wea ),
     .addra    ( mem_addr),
     .dina     ( mem_din ),

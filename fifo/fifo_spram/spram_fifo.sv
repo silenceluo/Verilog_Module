@@ -92,7 +92,7 @@ always_ff @(posedge clk or negedge rst_n) begin
 end
 
 
-logic [ADDR_WIDTH-1:0]  raddr_r1;
+//logic [ADDR_WIDTH-1:0]  raddr_r1;
 logic                   rvalid;
 
 
@@ -101,10 +101,10 @@ logic                   rvalid;
 always_ff @(posedge clk or negedge rst_n) begin
     if( ~rst_n) begin
         rvalid              <= 0;       
-        raddr_r1            <= 0;
+//        raddr_r1            <= 0;
     end else begin
         rvalid              <= ren & (~empty);
-        raddr_r1            <= raddr;
+//        raddr_r1            <= raddr;
     end
 end
 
@@ -134,11 +134,11 @@ always_comb begin
         
         mem1_wen                    = 0;
         mem1_din                    = 0;
-        mem1_waddr[ADDR_WIDTH-1:0]  = 0;
+        mem1_waddr[ADDR_WIDTH-2:0]  = 0;
     end else if(waddr[0] == 1) begin
         mem0_wen                    = 0;
         mem0_din                    = 0;
-        mem0_waddr[ADDR_WIDTH-1:0]  = 0;
+        mem0_waddr[ADDR_WIDTH-2:0]  = 0;
         
         mem1_wen                    = writing;
         mem1_din                    = wdata;
@@ -150,7 +150,7 @@ always_comb begin
         mem0_raddr[ADDR_WIDTH-2:0]  = raddr[ADDR_WIDTH-1:1];
         
         mem1_ren                    = 0;
-        mem1_raddr[ADDR_WIDTH-1:0]  = 0;  
+        mem1_raddr[ADDR_WIDTH-2:0]  = 0;  
         
        // rdata                       = mem0_dout;  
     end else if(raddr[0] == 1) begin
@@ -158,7 +158,7 @@ always_comb begin
         mem0_raddr[ADDR_WIDTH-2:0]  = 0;
         
         mem1_ren                    = reading;
-        mem1_raddr[ADDR_WIDTH-1:0]  = raddr[ADDR_WIDTH-1:1]; 
+        mem1_raddr[ADDR_WIDTH-2:0]  = raddr[ADDR_WIDTH-1:1]; 
         
         //rdata                       = mem1_dout;  
     end
@@ -185,7 +185,7 @@ fifo_bank #(    .DATA_WIDTH ( DATA_WIDTH ),
 
 
 fifo_bank #(    .DATA_WIDTH ( DATA_WIDTH ),
-                .FIFO_DEPTH ( FIFO_DEPTH )
+                .FIFO_DEPTH ( FIFO_DEPTH/2 )
     ) odd (                        
             .clk    ( clk   ),
             .rst_n  ( rst_n ),

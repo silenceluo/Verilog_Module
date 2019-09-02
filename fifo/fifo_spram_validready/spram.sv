@@ -14,10 +14,9 @@ module spram #( DATA_WIDTH  = 8,
 
 
 logic [DATA_WIDTH-1:0]      ram[FIFO_DEPTH-1:0] = '{default:0};
-logic [DATA_WIDTH-1:0]      din_r;
 logic [ADDR_WIDTH-1:0]      addr_r;
-logic [DATA_WIDTH-1:0]      dout_r;
-logic                       wr_en_r;
+
+
 
 always_ff @(posedge clk) begin
     if(wea) begin
