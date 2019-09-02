@@ -43,14 +43,14 @@ logic [DATA_WIDTH-1:0]  in_data_r1;
 
 
 always_comb begin  
-    full        = (count == FIFO_DEPTH);
-    empty       = (count == 0);
+    full        = ( count == (FIFO_DEPTH-1) );
+    empty       = ( count == 0 );
      
-    reading     = (~empty) && (out_ready);
+    reading     = (~empty) & (out_ready);
     writing     = (in_valid & (!full ||out_ready) );   
 
     in_ready    = (~full);
-    out_valid   = reading;
+    out_valid   = reading;  //Out_valid will be piped at fifo layer
     
     delay_wr    = reading & writing;
     direct_wr   = writing & (~reading);    
@@ -112,7 +112,6 @@ always_ff @(posedge clk or negedge rst_n) begin
         in_valid_r1 <= 0;
     end else begin
         delay_wr_r1     <= delay_wr;
-
         
         if(delay_wr) begin
             in_data_r1      <= in_data;
