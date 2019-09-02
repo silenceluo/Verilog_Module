@@ -1,0 +1,5 @@
+This fifo make use of single port ram and interleaved structure.
+
+This fifo design is using valid and ready protocol. This is my first design to use this protocol, I conclude this protocol as following:
+1. Either the valid and ready signal can be TRUE to wait for another one. 
+2. At design stage, the designers of each block must make sure that valid and ready signal are not waiting for each other, which will cause a deadlock. 

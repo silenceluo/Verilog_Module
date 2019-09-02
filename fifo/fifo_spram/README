@@ -3,3 +3,8 @@ b3636605a8fc6b3f9739b0c0ea1cb07a32ff90d6
     
 5a66a292dc4a80237799f502cbd7cb52514447ed
     This version changes to write mem with flops and delay is 1 cycle
+    
+    
+    
+FIFO using single port memory is different from dual port ones. To handle read and write collision, a buffer register must be added to store the written data while the read side has priority. 
+As we use two banks to interleave the fifo design, there will be no consecutive read and write for each bank. Read and Write will happen every other cycle respectively. Thus the fifo can be store the cached data into the memory when read is idle (1 cycle).
