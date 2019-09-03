@@ -1,0 +1,161 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Mon Sep  2 20:48:39 2019
+[*]
+[dumpfile] "/home/pei/Project/rtl/Verilog_Module/fifo/fifo_spram_validready_v2/fifo.vcd"
+[dumpfile_mtime] "Mon Sep  2 20:37:24 2019"
+[dumpfile_size] 10032
+[savefile] "/home/pei/Project/rtl/Verilog_Module/fifo/fifo_spram_validready_v2/1.gtkw"
+[timestart] 0
+[size] 1853 929
+[pos] -51 -51
+*-2.517668 16 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.spram_fifo.
+[treeopen] TOP.spram_fifo.bank_0.
+[sst_width] 223
+[signals_width] 182
+[sst_expanded] 1
+[sst_vpaned_height] 268
+@28
+TOP.clk
+TOP.rst_n
+@22
+TOP.in_data[7:0]
+@28
+TOP.in_ready
+TOP.in_valid
+@22
+TOP.out_data[7:0]
+@28
+TOP.out_ready
+TOP.out_valid
+@200
+-
+-
+@28
+TOP.spram_fifo.clk
+TOP.spram_fifo.rst_n
+TOP.spram_fifo.in_valid
+@22
+TOP.spram_fifo.in_data[7:0]
+@28
+TOP.spram_fifo.in_ready
+TOP.spram_fifo.out_valid
+@22
+TOP.spram_fifo.out_data[7:0]
+@28
+TOP.spram_fifo.out_ready
+TOP.spram_fifo.in_exec
+TOP.spram_fifo.out_exec
+TOP.spram_fifo.in_sel
+@29
+[color] 7
+TOP.spram_fifo.out_sel
+[color] 7
+TOP.spram_fifo.out_sel_r1
+@22
+[color] 1
+TOP.spram_fifo.bank0_in_data[7:0]
+@28
+[color] 1
+TOP.spram_fifo.bank0_in_exec
+[color] 1
+TOP.spram_fifo.bank0_in_ready
+[color] 1
+TOP.spram_fifo.bank0_in_valid
+@22
+[color] 3
+TOP.spram_fifo.bank0_out_data[7:0]
+@28
+TOP.spram_fifo.bank0_out_exec
+TOP.spram_fifo.bank0_out_ready
+TOP.spram_fifo.bank0_out_valid
+@22
+[color] 2
+TOP.spram_fifo.bank1_in_data[7:0]
+@28
+[color] 2
+TOP.spram_fifo.bank1_in_exec
+[color] 2
+TOP.spram_fifo.bank1_in_ready
+[color] 2
+TOP.spram_fifo.bank1_in_valid
+@22
+[color] 3
+TOP.spram_fifo.bank1_out_data[7:0]
+@28
+TOP.spram_fifo.bank1_out_exec
+TOP.spram_fifo.bank1_out_ready
+TOP.spram_fifo.bank1_out_valid
+@200
+-
+-
+@28
+TOP.spram_fifo.bank_0.clk
+TOP.spram_fifo.bank_0.rst_n
+TOP.spram_fifo.bank_0.in_valid
+@22
+TOP.spram_fifo.bank_0.in_data[7:0]
+@28
+TOP.spram_fifo.bank_0.in_ready
+TOP.spram_fifo.bank_0.out_valid
+@22
+TOP.spram_fifo.bank_0.out_data[7:0]
+@28
+TOP.spram_fifo.bank_0.out_ready
+@22
+TOP.spram_fifo.bank_0.count[3:0]
+@28
+TOP.spram_fifo.bank_0.empty
+TOP.spram_fifo.bank_0.full
+@22
+TOP.spram_fifo.bank_0.raddr[3:0]
+TOP.spram_fifo.bank_0.waddr[3:0]
+@28
+TOP.spram_fifo.bank_0.writing
+TOP.spram_fifo.bank_0.reading
+[color] 1
+TOP.spram_fifo.bank_0.mem_wea
+@22
+[color] 1
+TOP.spram_fifo.bank_0.mem_addr[3:0]
+[color] 1
+TOP.spram_fifo.bank_0.mem_din[7:0]
+[color] 1
+TOP.spram_fifo.bank_0.mem_dout[7:0]
+TOP.spram_fifo.bank_0.waddr_r1[3:0]
+TOP.spram_fifo.bank_0.in_data_r1[7:0]
+@28
+TOP.spram_fifo.bank_0.writing_buffered
+TOP.spram_fifo.bank_0.writing_direct
+@200
+-
+-
+@28
+TOP.spram_fifo.bank_0.RAM_U0.clk
+TOP.spram_fifo.bank_0.RAM_U0.rst_n
+TOP.spram_fifo.bank_0.RAM_U0.wea
+@22
+TOP.spram_fifo.bank_0.RAM_U0.addr[3:0]
+TOP.spram_fifo.bank_0.RAM_U0.din[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.dout[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.addr_r[3:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(0)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(1)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(2)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(3)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(4)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(5)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(6)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(7)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(8)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(9)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(10)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(11)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(12)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(13)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(14)[7:0]
+TOP.spram_fifo.bank_0.RAM_U0.ram(15)[7:0]
+[pattern_trace] 1
+[pattern_trace] 0
