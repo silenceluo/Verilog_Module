@@ -98,20 +98,28 @@ always_comb begin
     if(in_sel == 0) begin
         if(bank0_in_exec) begin
             in_sel_next = 1;
+        end else begin
+            in_sel_next = 0;            
         end
     end else if(in_sel == 1) begin
         if(bank1_in_exec) begin
             in_sel_next = 0;
+        end else begin
+            in_sel_next = 1;            
         end
     end
     
     if(out_sel == 0) begin
         if(bank0_out_exec) begin
             out_sel_next = 1;
+        end else begin
+            out_sel_next = 0;            
         end
     end else if(out_sel == 1) begin
         if(bank1_out_exec) begin
             out_sel_next = 0;
+        end else begin
+            out_sel_next = 1;            
         end
     end
 end
