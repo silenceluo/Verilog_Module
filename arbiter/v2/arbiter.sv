@@ -1,5 +1,10 @@
-//Using Two Simple Priority Arbiters with a Mask
-//author: dongjun_luo@hotmail.com
+/////////////////////////////////////////////////////////////////
+// Arbiter, referred to https://github.com/freecores/round_robin_arbiter
+// Fix the bug in ff logic
+// 20190903
+////////////////////////////////////////////////////////////////////////
+
+
 module arbiter (
     input logic         rst_n,
     input logic	        clk,
@@ -14,21 +19,6 @@ logic [3:0] 	grant_comb;
 logic [3:0]	    grant;
 logic	        no_mask_req;
 logic [3:0] 	nomask_grant;
-
-/*
-always_ff @ (posedge clk or negedge rst_n) begin
-	if (!rst_n) begin
-		rotate_ptr[3:0] <= 4'b1111;
-	end else begin
-		case (1'b1) // synthesis parallel_case
-			grant[0]: rotate_ptr[3:0] <= 4'b1110;
-			grant[1]: rotate_ptr[3:0] <= 4'b1100;
-			grant[2]: rotate_ptr[3:0] <= 4'b1000;
-			grant[3]: rotate_ptr[3:0] <= 4'b1111;
-		endcase
-	end
-end
-*/
 
 always_comb begin
     rotate_ptr[3:0] = 4'b1111;

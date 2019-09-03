@@ -15,7 +15,7 @@ module testbench;
     rst_n = 0; 
     req = 'b0; 
     #20 rst_n = 1;
-    #10 req = 4'b0001;
+    #15 req = 4'b0001;
     #10 req = 4'b0010;
     #10 req = 4'b0100;
     #10 req = 4'b1000;

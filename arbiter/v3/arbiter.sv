@@ -1,5 +1,10 @@
-//Using Two Simple Priority Arbiters with a Mask - scalable
-//author: dongjun_luo@hotmail.com
+/////////////////////////////////////////////////////////////////
+// Arbiter, referred to https://github.com/freecores/round_robin_arbiter
+// Fix the bug in ff logic
+// 20190903
+////////////////////////////////////////////////////////////////////////
+
+
 module arbiter #(   parameter N = 4 ) (
 	input logic         rst_n,
 	input logic         clk,
@@ -21,28 +26,31 @@ genvar i;
 
 // rotate pointer update logic
 assign update_ptr = |grant[N-1:0];
-/*
-generate
-    for (i=2;i<N;i=i+1) begin
-        always @ (posedge clk or negedge rst_n) begin
-	        if (!rst_n)
-		        rotate_ptr[i] <= 1'b1;
-	        else if (update_ptr)
-		        rotate_ptr[i] <= grant[N-1] | (|grant[i-1:0]);
-        end
-    end
-endgenerate
-*/
 
 always_comb begin
-     rotate_ptr[N-1:0] = {N{1'b1}};
-     case(1'b1)
-        generate
-            for (i=0; i<N-1; i=i+1) begin
-                grant[i]: rotate_ptr[N-1:0] = {N{1'b1}} << (i+1);
+	if (~rst_n) begin
+		rotate_ptr[0] <= 1'b1;
+		rotate_ptr[1] <= 1'b1;
+    end else begin
+        if (update_ptr) begin
+		    rotate_ptr[0] <= grant[N-1];
+		    rotate_ptr[1] <= grant[N-1] | grant[0];
+        end
+	end
+end
+
+generate
+    for (i=2; i<N; i=i+1) begin
+        always_comb begin
+        	if (~rst_n) begin
+		        rotate_ptr[i] <= 1'b1;
+            end else begin
+                if (update_ptr) begin
+                    rotate_ptr[i] = grant[N-1] | (|grant[i-1:0]);
+                end
             end
-        endgenerate
-     endcase
+        end
+    end
 endgenerate
 
 

@@ -1,5 +1,9 @@
-//Rotate -> Priority -> Rotate
-//author: dongjun_luo@hotmail.com
+////////////////////////////////////////////////////////////////////////
+// Arbiter, referred to https://github.com/freecores/round_robin_arbiter
+// Fix the bug in ff logic
+// 20190903
+////////////////////////////////////////////////////////////////////////
+
 module arbiter (
     input logic         rst_n,
     input logic	        clk,
@@ -51,20 +55,6 @@ end
 
 // update the rotate pointer
 // rotate pointer will move to the one after the current granted
-/*
-always @ (posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-        rotate_ptr[1:0] <= 2'b0;
-    end else begin
-        case (1'b1) // synthesis parallel_case
-            grant[0]: rotate_ptr[1:0] <= 2'd1;
-            grant[1]: rotate_ptr[1:0] <= 2'd2;
-            grant[2]: rotate_ptr[1:0] <= 2'd3;
-            grant[3]: rotate_ptr[1:0] <= 2'd0;
-        endcase
-    end
-end
-*/
 
 always_comb begin
     rotate_ptr[1:0] = 2'b0;
