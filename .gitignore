@@ -1,6 +1,3 @@
-arbiter/v1/vivado
-arbiter/v2/vivado
-arbiter/v3/vivado
-arbiter/v4/vivado
-fifo/async_fifo/vivado
-fifo/sync_fifo/vivado
+*vivado
+*obj_dir
+*.vcd

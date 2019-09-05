@@ -18,7 +18,7 @@ module adder(
     
     input logic [31:0]  b,
     input logic         b_valid,
-    output logic        b_ready    
+    output logic        b_ready,
     
     output logic [31:0] c,
     output logic        c_valid,
@@ -145,7 +145,7 @@ always_comb begin
 	    e_diff      = e_large - e_small;
 	    
 	    m_shift[23:1]   = m_small >> (e_diff);
-	    m_shift[0]      = |m_small[e_diff-1:0];
+	    m_shift[0]      = m_small[e_diff-1];  //?
     end
 end 
 
@@ -184,7 +184,7 @@ always_comb begin
     if(special == 0) begin
         add1_s  = add0_s;
     
-        if(add0_sum[27]) begin
+        if(add0_m[27]) begin
             add1_m          = add0_m[27:4];
             add1_guard      = add0_m[3];
             add1_round_bit  = add0_m[2];
