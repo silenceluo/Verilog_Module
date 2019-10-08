@@ -53,10 +53,10 @@ logic dst_ready_i;
   end 
     
     always  begin
-        #5 src_clk_i = !src_clk_i; 
+        #27 src_clk_i = !src_clk_i; 
     end
     always  begin
-        #27 dst_clk_i = !dst_clk_i; 
+        #5 dst_clk_i = !dst_clk_i; 
     end
 
     
