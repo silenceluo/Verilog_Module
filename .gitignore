@@ -1,3 +1,4 @@
 *vivado
 *obj_dir
 *.vcd
+*modelsim*
