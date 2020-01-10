@@ -15,7 +15,8 @@ module cdc_dst #(
 );
 
 localparam	WAIT_GRANT 	= 2'b00,
-			GOBACK		= 2'b01;
+			WAIT_READY	= 2'b01,
+			GOBACK		= 2'b10;
 
 logic [1:0] state;
 
@@ -38,14 +39,30 @@ always_ff @(posedge clk_i or negedge rst_ni) begin
 	end else begin
 		case(state)
 			WAIT_GRANT: begin
-				if( (async_req_rx2 != async_req_rx1) && ready_i) begin
+				if( async_req_rx2 != async_req_rx1 ) begin
 					valid_o 	<= 1;
 					data_o		<= async_data_i;
-					state		<= GOBACK;
-					async_ack_o	<= ~async_ack_o;
+					
+					// If next stage is ready, data is sent
+					if(ready_i == 1) begin
+						state		<= GOBACK;
+						async_ack_o	<= ~async_ack_o;
+					end else begin
+						state	<= WAIT_READY;
+					end
 				end else begin
 					valid_o <= 0;
 					state 	<= WAIT_GRANT;
+				end
+			end
+
+			WAIT_READY:	begin
+				// If next stage is ready, data is sent
+				if(ready_i == 1) begin
+					state		<= GOBACK;
+					async_ack_o	<= ~async_ack_o;
+				end else begin
+					state	<= WAIT_READY;
 				end
 			end
 			
