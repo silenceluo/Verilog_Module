@@ -47,6 +47,12 @@ module testbench;
         #26 rdy_b = 0;
         #13 rdy_b = 1;
         #45 rdy_b = 0;
+        #30 rdy_b = 1;
+        #27 rdy_b = 0;
+        #10 rdy_b = 1;
+        #26 rdy_b = 0;
+        #13 rdy_b = 1;
+        #45 rdy_b = 0;
 	end 
 	
 	always  
