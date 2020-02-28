@@ -24,7 +24,7 @@ logic async_req_rx0, async_req_rx1, async_req_rx2;
 
 always_ff @(posedge clk_i or negedge rst_ni) begin
 	if(rst_ni == 0) begin
-		{async_req_rx2, async_req_rx1, async_req_rx0} <= 2'b00;
+		{async_req_rx2, async_req_rx1, async_req_rx0} <= 3'b000;
 	end else begin
 		{async_req_rx2, async_req_rx1, async_req_rx0} <= {async_req_rx1, async_req_rx0, async_req_i};
 	end

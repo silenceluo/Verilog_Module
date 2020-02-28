@@ -25,7 +25,7 @@ logic async_ack_tx0, async_ack_tx1, async_ack_tx2;
 
 always_ff @(posedge clk_i or negedge rst_ni) begin
 	if(rst_ni == 0) begin
-		{async_ack_tx2, async_ack_tx1, async_ack_tx0} <= 2'b00;
+		{async_ack_tx2, async_ack_tx1, async_ack_tx0} <= 3'b000;
 	end else begin
 		{async_ack_tx2, async_ack_tx1, async_ack_tx0} <= {async_ack_tx1, async_ack_tx0, async_ack_i};
 	end

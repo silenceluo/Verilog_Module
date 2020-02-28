@@ -34,7 +34,6 @@ always_ff @(posedge rclk or rrst_n) begin
     end else begin  
         if(!empty && ren) begin
             raddr <= raddr + 1;
-//            rdata <= mem[raddr[ADDR_WIDTH-1:0]];
         end
     end   
 end
