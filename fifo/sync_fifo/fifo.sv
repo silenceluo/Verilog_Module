@@ -64,6 +64,24 @@ assign rdata = mem[raddr];
 
 always_ff @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
+        count <= 0;
+    end else if (writing && !reading) begin
+        count <= count+1;
+    end else if (reading && !writing) begin
+        count <= count-1;
+    end
+end
+
+always_comb begin
+    empty   = (count == 0);
+    full    = (count == FIFO_DEPTH);
+end
+
+
+
+/*
+always_ff @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
         empty <= 1;
     end else if (reading && next_waddr == next_raddr && !full) begin
         empty <= 1;
@@ -81,15 +99,8 @@ always_ff @(posedge clk or negedge rst_n) begin
         full <= 0;
     end
 end
+*/
 
-always_ff @(posedge clk or negedge rst_n) begin
-    if (~rst_n) begin
-        count <= 0;
-    end else if (writing && !reading) begin
-        count <= count+1;
-    end else if (reading && !writing) begin
-        count <= count-1;
-    end
-end
+
 
 endmodule
