@@ -6,47 +6,58 @@
 
 
 module arbiter #(   parameter N = 4 ) (
-	input logic         rst_n,
-	input logic         clk,
-	input logic [N-1:0]	req,
-	input logic [N-1:0]	grant
+	input logic             rst_n,
+	input logic             clk,
+	input logic [N-1:0]	    req,
+	output logic [N-1:0]	grant
 );
 
 
 logic	[N-1:0]	    rotate_ptr;
-logic	[N-1:0]	    mask_req;
-logic	[N-1:0]	    mask_grant;
+logic	[N-1:0]	    masked_req;
+logic	[N-1:0]	    masked_grant;
 logic	[N-1:0]	    grant_comb;
-logic	[N-1:0]	    grant;
-logic		        no_mask_req;
-logic	[N-1:0]     nomask_grant;
+
+logic		        no_masked_req;
+logic	[N-1:0]     unmasked_grant;
 logic		        update_ptr;
+
+logic [N-1:0]       grant_q, grant_d;
 
 genvar i;
 
-// rotate pointer update logic
-assign update_ptr = |grant[N-1:0];
 
-always_comb begin
-	if (~rst_n) begin
-		rotate_ptr[0] <= 1'b1;
-		rotate_ptr[1] <= 1'b1;
+always_ff @ (posedge clk or negedge rst_n) begin
+	if (!rst_n)	begin
+	    grant_q <= '0;
     end else begin
-        if (update_ptr) begin
-		    rotate_ptr[0] <= grant[N-1];
-		    rotate_ptr[1] <= grant[N-1] | grant[0];
-        end
-	end
+        grant_q <= grant_d;
+    end
 end
 
+// rotate pointer update logic
+always_comb begin
+    update_ptr = |grant_q[N-1:0];
+    
+	if (~rst_n) begin
+		rotate_ptr[0] = 1'b1;
+		rotate_ptr[1] = 1'b1;
+    end else begin
+        if (update_ptr) begin
+		    rotate_ptr[0] = grant_q[N-1];
+		    rotate_ptr[1] = grant_q[N-1] | grant_q[0];
+        end
+	end    
+end
+	
 generate
     for (i=2; i<N; i=i+1) begin
         always_comb begin
         	if (~rst_n) begin
-		        rotate_ptr[i] <= 1'b1;
+	            rotate_ptr[i] = 1'b1;
             end else begin
                 if (update_ptr) begin
-                    rotate_ptr[i] = grant[N-1] | (|grant[i-1:0]);
+                    rotate_ptr[i] = grant_q[N-1] | (|grant_q[i-1:0]);
                 end
             end
         end
@@ -54,29 +65,30 @@ generate
 endgenerate
 
 
-
-// mask grant generation logic
-assign mask_req[N-1:0] = req[N-1:0] & rotate_ptr[N-1:0];
-
-assign mask_grant[0] = mask_req[0];
+// masked and unmasked grant generation logic
+always_comb begin
+    masked_req[N-1:0]   = req[N-1:0] & rotate_ptr[N-1:0];
+    masked_grant[0]     = masked_req[0];
+    unmasked_grant[0]   = req[0];
+end
+    
 generate
-    for (i=1;i<N;i=i+1)
-	    assign mask_grant[i] = (~|mask_req[i-1:0]) & mask_req[i];
+    for (i=1;i<N;i=i+1) begin
+        always_comb begin
+            masked_grant[i]     = (~|masked_req[i-1:0]) & masked_req[i];
+            unmasked_grant[i]   = (~|req[i-1:0]) & req[i];
+        end
+    end
 endgenerate
 
-// non-mask grant generation logic
-assign nomask_grant[0] = req[0];
-generate
-    for (i=1;i<N;i=i+1)
-	    assign nomask_grant[i] = (~|req[i-1:0]) & req[i];
-endgenerate
 
 // grant generation logic
-assign no_mask_req = ~|mask_req[N-1:0];
-assign grant_comb[N-1:0] = mask_grant[N-1:0] | (nomask_grant[N-1:0] & {N{no_mask_req}});
+always_comb begin
+    no_masked_req = ~|masked_req[N-1:0];
+    grant_comb[N-1:0] = masked_grant[N-1:0] | (unmasked_grant[N-1:0] & {N{no_masked_req}});
 
-always @ (posedge clk or negedge rst_n) begin
-	if (!rst_n)	grant[N-1:0] <= {N{1'b0}};
-	else		grant[N-1:0] <= grant_comb[N-1:0] & ~grant[N-1:0];
+    grant_d[N-1:0] = grant_comb[N-1:0];
+    grant = grant_d;
 end
+
 endmodule
