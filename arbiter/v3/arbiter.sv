@@ -6,30 +6,30 @@
 
 
 module arbiter #(   parameter N = 4 ) (
-	input logic             rst_n,
-	input logic             clk,
-	input logic [N-1:0]	    req,
-	output logic [N-1:0]	grant
+    input logic             rst_n,
+    input logic             clk,
+    input logic [N-1:0]     req,
+    output logic [N-1:0]    grant
 );
 
 
-logic	[N-1:0]	    rotate_ptr;
-logic	[N-1:0]	    masked_req;
-logic	[N-1:0]	    masked_grant;
-logic	[N-1:0]	    grant_comb;
+logic    [N-1:0]        rotate_ptr;
+logic    [N-1:0]        masked_req;
+logic    [N-1:0]        masked_grant;
+logic    [N-1:0]        grant_comb;
 
-logic		        no_masked_req;
-logic	[N-1:0]     unmasked_grant;
-logic		        update_ptr;
+logic                   no_masked_req;
+logic    [N-1:0]        unmasked_grant;
+logic                   update_ptr;
 
-logic [N-1:0]       grant_q, grant_d;
+logic [N-1:0]           grant_q, grant_d;
 
 genvar i;
 
 
 always_ff @ (posedge clk or negedge rst_n) begin
-	if (!rst_n)	begin
-	    grant_q <= '0;
+    if (!rst_n)    begin
+        grant_q <= '0;
     end else begin
         grant_q <= grant_d;
     end
@@ -39,22 +39,22 @@ end
 always_comb begin
     update_ptr = |grant_q[N-1:0];
     
-	if (~rst_n) begin
-		rotate_ptr[0] = 1'b1;
-		rotate_ptr[1] = 1'b1;
+    if (~rst_n) begin
+        rotate_ptr[0] = 1'b1;
+        rotate_ptr[1] = 1'b1;
     end else begin
         if (update_ptr) begin
-		    rotate_ptr[0] = grant_q[N-1];
-		    rotate_ptr[1] = grant_q[N-1] | grant_q[0];
+            rotate_ptr[0] = grant_q[N-1];
+            rotate_ptr[1] = grant_q[N-1] | grant_q[0];
         end
-	end    
+    end    
 end
-	
+    
 generate
     for (i=2; i<N; i=i+1) begin
         always_comb begin
-        	if (~rst_n) begin
-	            rotate_ptr[i] = 1'b1;
+            if (~rst_n) begin
+                rotate_ptr[i] = 1'b1;
             end else begin
                 if (update_ptr) begin
                     rotate_ptr[i] = grant_q[N-1] | (|grant_q[i-1:0]);
@@ -84,11 +84,11 @@ endgenerate
 
 // grant generation logic
 always_comb begin
-    no_masked_req = ~|masked_req[N-1:0];
-    grant_comb[N-1:0] = masked_grant[N-1:0] | (unmasked_grant[N-1:0] & {N{no_masked_req}});
+    no_masked_req       = ~|masked_req[N-1:0];
+    grant_comb[N-1:0]   = masked_grant[N-1:0] | (unmasked_grant[N-1:0] & {N{no_masked_req}});
 
-    grant_d[N-1:0] = grant_comb[N-1:0];
-    grant = grant_d;
+    grant_d[N-1:0]      = grant_comb[N-1:0];
+    grant               = grant_d;
 end
 
 endmodule
