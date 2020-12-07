@@ -16,7 +16,7 @@ module testbench;
 
     logic [ADDR_WIDTH-1:0]  count; 
     
-    fifo U0( 
+    generic_sync_fifo U0( 
             .clk    (clk),
             .rst_n  (rst_n),
 
