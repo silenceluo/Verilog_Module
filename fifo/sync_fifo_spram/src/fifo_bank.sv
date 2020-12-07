@@ -24,7 +24,6 @@ logic [ADDR_WIDTH-1:0]  delayed_waddr;
 
 
 logic                   delayed_wen;
-logic [DATA_WIDTH-1:0]  mux_dout;
 
 always_ff @(posedge clk or negedge rst_n) begin
     if(~rst_n) begin
@@ -48,41 +47,20 @@ always_comb begin
     mem_din     = delayed_wen ? delayed_wdata : wdata;
 end
 
-/*
-blk_mem_gen_0 U0 (
-    .clka     ( clk     ),
-    .ena      ( rst_n   ),
-    .wea      ( mem_wea ),
-    .addra    ( mem_addr),
-    .dina     ( mem_din ),
-    .douta    ( mem_dout)
-);
-*/
+
 spram U0(
-    .clk      ( clk     ),
-    .rst_n    ( rst_n   ),
-    .wea      ( mem_wea ),
-    .addra    ( mem_addr),
-    .dina     ( mem_din ),
-    .douta    ( mem_dout)
+    .clk        ( clk       ),
+    .rst_n      ( rst_n     ),
+
+    .cs         ( mem_wea | ren ),
+    .we         ( mem_wea       ),
+
+    .addr       ( mem_addr  ),
+    .wdata      ( mem_din   ),
+    .rdata      ( mem_dout  )
 );
 
-
-always_comb begin
-    mux_dout = mem_dout;
-end
-
-/*
-always_ff @(posedge clk or negedge rst_n) begin
-    if(~rst_n) begin
-        rdata <= 0;
-    end else begin
-        rdata <= mux_dout;
-    end
-end
-*/
-
-assign rdata = mux_dout;
+assign rdata = mem_dout;
 
 endmodule
 

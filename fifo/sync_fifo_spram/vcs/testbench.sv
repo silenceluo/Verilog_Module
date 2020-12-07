@@ -21,6 +21,7 @@ module testbench;
     logic [DATA_WIDTH-1:0]  wdata_r;
     
     spram_fifo U0( 
+    //fifo_fwft U0(
                     .clk,
                     .rst_n,
                 
@@ -52,14 +53,14 @@ module testbench;
         
     #15 rst_n = 1; 
     #8;
-    #10 wen = 1; wdata = 10;
-    #10 wen = 1; wdata = 11;
-    #10 wen = 1; wdata = 12;
-    #10 wen = 1; wdata = 13; ren =1;      
-    #10 wen = 1; wdata = 14; ren =1; 
-    #10 wen = 1; wdata = 65; ren =1; 
-    #10 wen = 1; wdata = 22; ren =1; 
-    #10 wen = 1; wdata = 13; ren =1; 
+    #10 wen = 1; wdata = 1;
+    #10 wen = 1; wdata = 2;
+    #10 wen = 1; wdata = 3;
+    #10 wen = 1; wdata = 4; ren =1;      
+    #10 wen = 1; wdata = 5; ren =1; 
+    #10 wen = 1; wdata = 6; ren =1; 
+    #10 wen = 1; wdata = 7; ren =1; 
+    #10 wen = 1; wdata = 8; ren =1; 
     #10 wen = 0;
     #50 ren = 0;
   end 
