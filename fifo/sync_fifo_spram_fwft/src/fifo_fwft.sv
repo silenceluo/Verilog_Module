@@ -1,7 +1,8 @@
 module fifo_fwft #( 
     DATA_WIDTH  = 8,
     FIFO_DEPTH  = 32,
-    ADDR_WIDTH  = $clog2(FIFO_DEPTH)
+    ADDR_WIDTH  = $clog2(FIFO_DEPTH),
+    THRESHOLD   = 4
 )(
     input logic                     clk,
     input logic                     rst_n,
@@ -9,13 +10,13 @@ module fifo_fwft #(
     input logic                     ren_i,
     output logic [DATA_WIDTH-1:0]   rdata_o, 
     output logic                    empty_o,
-    output logic                    rvalid_o,
+    output logic                    aempty_o,
     
     input logic                     wen_i,
     input logic [DATA_WIDTH-1:0]    wdata_i,
     output logic                    full_o,
     
-    output logic [ADDR_WIDTH-1:0]   count_o
+    output logic [ADDR_WIDTH:0]     count_o
 );
 
 
@@ -29,7 +30,9 @@ logic [1:0]                     empty;
 
 logic [ADDR_WIDTH : 0]          waddr_d,    waddr_q;    //  Addr of current writing
 logic [ADDR_WIDTH : 0]          raddr_d,    raddr_q;    //  Addr of next reading
+logic [ADDR_WIDTH : 0]          cnt_d,      cnt_q;
 
+logic                           reading,    writing;
 always_comb begin
     wdata[0]    = wdata_i;
     wdata[1]    = wdata_i;
@@ -60,23 +63,40 @@ always_ff @(posedge clk or negedge rst_n) begin
     if(rst_n == 0) begin
         waddr_q <= '0;
         raddr_q <= '0;
+        cnt_q   <= '0;
     end else begin
         waddr_q <= waddr_d;
         raddr_q <= raddr_d;
+        cnt_q   <= cnt_d;
     end
 end
 
 always_comb begin
+    reading = 0;
+    writing = 0;
+   
     waddr_d = waddr_q;
     raddr_d = raddr_q;
+    cnt_d   = cnt_q;
 
     if(wen_i==1 && full_o==0) begin
+        writing = 1;
         waddr_d = waddr_q + 1;
     end 
 
     if(ren_i==1 && empty_o==0) begin
+        reading = 1;
         raddr_d = raddr_q + 1;
     end 
+
+    if( (writing==1) && (reading==0) ) begin
+        cnt_d   = cnt_q + 1;
+    end else if( (writing==0) && (reading==1) ) begin
+        cnt_d   = cnt_q - 1;
+    end
+
+    aempty_o    = (cnt_q <= THRESHOLD);
+    count_o     = cnt_q;
 end
 
 
