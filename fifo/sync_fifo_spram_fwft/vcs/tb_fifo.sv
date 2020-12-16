@@ -13,8 +13,9 @@ module tb_fifo;
     logic                   ren,    ren_q;    
     logic [DATA_WIDTH-1:0]  rdata; 
     logic                   empty;
+    logic                   aempty;
 
-    logic [ADDR_WIDTH-1:0]  count; 
+    logic [ADDR_WIDTH:0]    count; 
     
     always_ff @(posedge clk) begin
         wen_q   <= wen;
@@ -33,12 +34,13 @@ module tb_fifo;
         .ren_i      ( ren_q     ),
         .rdata_o    ( rdata     ), 
         .empty_o    ( empty     ),
-        .rvalid_o   (           ),      
+        .aempty_o   ( aempty    ),      
 
         .wen_i      ( wen_q     ),
         .wdata_i    ( wdata_q   ),    
         .full_o     ( full      ),
-        .count_o    (           )
+
+        .count_o    (count      )
     );
 
     initial begin
