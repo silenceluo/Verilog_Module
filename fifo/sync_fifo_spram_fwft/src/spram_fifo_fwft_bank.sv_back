@@ -138,7 +138,7 @@ always_comb begin
                     mux_d   = 0;
 
                     raddr_d = raddr_q + 1;  //  Update r pointer
-                    count_d = count_q - 1;
+                    //  count_d = count_q - 1;  // No need to update counter if both reading and writing
                     wdata_d = wdata;        //  Save data to wdata_q to write next cycle
 
                     state_d = WriteDelay;   //  Write mem
@@ -198,7 +198,7 @@ always_comb begin
             mem_din = wdata_q;
 
             waddr_d = waddr_q + 1;  //  Update w pointer
-            count_d = count_q + 1;
+            //  count_d = count_q + 1;  // No need to update counter if both reading and writing
 
             state_d = Process;      //  WR & RD last cycle, must be idle this cycle
         end
@@ -209,7 +209,18 @@ always_comb begin
     endcase
 end
 
+always_comb begin
+    sram_ifc_ports.cs       = mem_cs;
+    sram_ifc_ports.we       = mem_wea;
 
+    sram_ifc_ports.addr     = mem_addr;
+    sram_ifc_ports.wdata    = mem_din;
+    sram_ifc_ports.wmask    = { DATA_WIDTH/8{1'b1} };
+
+    mem_dout                = sram_ifc_ports.rdata;
+end 
+
+/*
 generate
     if(USE_NNA_SPRAM == 1) begin
         always_comb begin
@@ -240,6 +251,7 @@ generate
         );
     end
 endgenerate
+*/
 
 //  ToDo: check if it works to use FLOP for both case
 generate 
