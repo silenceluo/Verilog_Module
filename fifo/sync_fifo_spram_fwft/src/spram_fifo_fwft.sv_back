@@ -42,22 +42,22 @@ always_comb begin
     wdata[1]    = wdata_i;
     if(waddr_q[0] == 0) begin
         full_o  = full[0];
-        wen[0]  = wen_i;
+        wen[0]  = writing;
         wen[1]  = 0;
     end else begin
         full_o  = full[1];
         wen[0]  = 0;
-        wen[1]  = wen_i;        
+        wen[1]  = writing;        
     end
 
     if(raddr_q[0] == 0) begin
-        ren[0]  = ren_i;
+        ren[0]  = reading;
         ren[1]  = 0;
         empty_o = empty[0];
         rdata_o = rdata[0];
     end else begin
         ren[0]  = 0;
-        ren[1]  = ren_i;    
+        ren[1]  = reading;    
         empty_o = empty[1];
         rdata_o = rdata[1];
     end
@@ -89,7 +89,8 @@ always_comb begin
     raddr_d = raddr_q;
     cnt_d   = cnt_q;
 
-    if(wen_i==1 && full_o==0) begin
+    //  if( wen_i==1 && (ren_i==1 || full_o==0) ) begin // This version will read and write the reg at the same time
+    if( (wen_i==1) && (full_o==0) ) begin
         writing = 1;
         waddr_d = waddr_q + 1;
     end 
@@ -114,8 +115,8 @@ end
 spram_fifo_fwft_bank #( 
     .DATA_WIDTH ( DATA_WIDTH    ),
     .FIFO_DEPTH ( FIFO_DEPTH>>1 ),
-    .SPRAM_FLOP     ( 0 ),
-    .USE_NNA_SPRAM  ( 1 )
+    .SPRAM_FLOP     ( 0 ),  //  If the rdata is flopped at sram output
+    .USE_NNA_SPRAM  ( 1 )   //  If use the sram_ifc and spram
 ) fifo_bank_a (  
     .clk        ( clk       ),
     .rst_n      ( rst_n     ),
@@ -135,8 +136,8 @@ spram_fifo_fwft_bank #(
 spram_fifo_fwft_bank #( 
     .DATA_WIDTH ( DATA_WIDTH    ),
     .FIFO_DEPTH ( FIFO_DEPTH>>1 ),
-    .SPRAM_FLOP     ( 0 ),
-    .USE_NNA_SPRAM  ( 1 )    
+    .SPRAM_FLOP     ( 0 ),  //  If the rdata is flopped at sram output
+    .USE_NNA_SPRAM  ( 1 )   //  If use the sram_ifc and spram
 ) fifo_bank_b (  
     .clk        ( clk       ),
     .rst_n      ( rst_n     ),
