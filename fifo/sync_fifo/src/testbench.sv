@@ -5,6 +5,7 @@ module testbench;
                
     logic                   clk;
     logic                   rst_n;
+    logic                   clear;
 
     logic                   ren;
     logic [DATA_WIDTH-1:0]  rdata; 
@@ -19,6 +20,7 @@ module testbench;
     generic_sync_fifo U0( 
             .clk    (clk),
             .rst_n  (rst_n),
+            .clear  (clear),
 
             .ren    (ren),
             .rdata  (rdata), 
@@ -38,6 +40,7 @@ module testbench;
     ren = 0; 
     wen = 0; 
     wdata = 0;
+    clear = 0; 
         
     #15 rst_n = 1; 
     #8 wen = 1; wdata = 10;
@@ -48,6 +51,12 @@ module testbench;
     #10 wen = 1; wdata = 65; ren =1; 
     #10 wen = 1; wdata = 22; ren =1; 
     #10 wen = 1; wdata = 13; ren =1; 
+
+    #10 wen = 1; ren = 1; clear=1;
+    #10 clear =0 ;
+    #10 ren =1;
+    #10 ren =0;
+    #10 wen = 1; wdata = 13;
   end 
     
     always  begin

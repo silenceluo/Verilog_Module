@@ -44,7 +44,7 @@ spram_fifo spram_fifo_i(
 assign fifo_rd_en = !fifo_empty && (!dout_valid || ren);
 assign empty = !dout_valid;
 
-always @(posedge clk) begin
+always @(posedge clk or negedge rst_n ) begin
     if ( rst_n ==0 ) begin
         dout_valid  <= 0;
     end else begin

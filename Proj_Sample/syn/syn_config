@@ -1,0 +1,13 @@
+design	= cmap_decoder
+lib	= tsmc_12nm
+corner	= SLOW
+reports = reports_12slow
+results = results_12slow
+search_path = ../rtl/
+
+
+flist	= rtl.f
+
+generic_sync_fifo.sv
+cmap_kernel.sv
+cmap_decoder.sv

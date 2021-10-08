@@ -20,8 +20,8 @@ module testbench;
     logic                   ren_r, wen_r;
     logic [DATA_WIDTH-1:0]  wdata_r;
     
-    spram_fifo U0( 
-    //fifo_fwft U0(
+    //  spram_fifo U0( 
+    fifo_fwft U0(
                     .clk,
                     .rst_n,
                 

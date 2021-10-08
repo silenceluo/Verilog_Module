@@ -125,7 +125,7 @@ always_comb begin
 end
 
 
-
+/*
 always_ff @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
         empty <= 1;
@@ -144,6 +144,12 @@ always_ff @(posedge clk or negedge rst_n) begin
     end else if (reading && !writing) begin
         full <= 0;
     end
+end
+*/
+
+always_comb begin
+    empty   = (count == 0);
+    full    = (count == FIFO_DEPTH);  //Almost full
 end
 
 always_ff @(posedge clk or negedge rst_n) begin
