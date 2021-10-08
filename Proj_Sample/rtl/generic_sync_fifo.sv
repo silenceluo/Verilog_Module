@@ -37,6 +37,7 @@ always_comb begin
         waddr_d = 0;
         writing = 0;
         reading = 0;
+<<<<<<< HEAD:Proj_Sample/rtl/generic_sync_fifo.sv
         count_d = 0;
     end else begin
         //  writing = wen && (ren || !full);
@@ -61,6 +62,39 @@ always_comb begin
             count_d = count_q - 1;
         end else begin
             count_d = count_q;                
+=======
+        count_d = 0;        
+    end else begin
+        if(clear == 1) begin
+            raddr_d = 0;
+            waddr_d = 0;
+            writing = 0;
+            reading = 0;
+            count_d = 0;
+        end else begin
+            writing = wen && (ren || !full);
+            reading = ren && !empty;  
+
+            if(reading) begin
+                raddr_d = raddr_q + 1;
+            end else begin
+                raddr_d = raddr_q;
+            end
+            
+            if(writing) begin
+                waddr_d = waddr_q + 1;
+            end else begin
+                waddr_d = waddr_q;
+            end  
+
+            if (writing && !reading) begin
+                count_d = count_q + 1;
+            end else if (reading && !writing) begin
+                count_d = count_q - 1;
+            end else begin
+                count_d = count_q;                
+            end
+>>>>>>> ab9cf338e52c2d6687cb6368b79ce7e55d1d8b44:fifo/sync_fifo/fifo.sv
         end
     end  
 end
@@ -81,7 +115,11 @@ end
 always_comb begin
     empty   = ( count == 0 );
     full    = ( count == FIFO_DEPTH );  //Almost full
+<<<<<<< HEAD:Proj_Sample/rtl/generic_sync_fifo.sv
     afull   = ( count >= (FIFO_DEPTH-THRESHOLD) );
+=======
+    afull   = ( count > (FIFO_DEPTH-THRESHOLD) );
+>>>>>>> ab9cf338e52c2d6687cb6368b79ce7e55d1d8b44:fifo/sync_fifo/fifo.sv
 end
 
 
