@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#PBS -N dc_shell
+#PBS -V -j oe -o dc_shell.qlog
+#PBS -q synopsys_now
+#PBS -l nodes=1,instance_type=c5.12xlarge
+#PBS -P ACE_synthesis
+
+cd /data/shared/ace/luopl/Proj/zeroskip_structure/syn/syn_MAC64
+dc_shell -f scripts/dc.tcl

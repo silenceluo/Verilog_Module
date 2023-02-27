@@ -1,0 +1,18 @@
+design = zeroskip_pipe_wrapper_MAC1024
+lib = tsmc_12nm
+corner = SLOW
+reports = reports_12slow
+results = results_12slow
+search_path = ../../src
+
+
+flist	= rtl.f
+
+
+fifo_slice.sv
+bridge_split.sv
+bridge_combine.sv
+zeroskip.sv
+
+zeroskip_pipe_wrapper_MAC1024.sv
+

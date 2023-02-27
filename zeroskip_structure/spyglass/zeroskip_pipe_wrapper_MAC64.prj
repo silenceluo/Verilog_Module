@@ -1,0 +1,38 @@
+#!SPYGLASS_PROJECT_FILE
+#!VERSION 3.0
+#  -------------------------------------------------------------------
+#  This is a software generated project file. Manual edits to this file could be lost during the next save operation
+#  Copyright Synopsys Inc.
+#  Last Updated By: SpyGlass SpyGlass_vO-2018.09-SP1
+#  Last Updated On Wed Oct 28 10:36:45 2020
+#
+#  -------------------------------------------------------------------
+
+##Data Import Section
+
+read_file -type verilog ../src/fifo_slice.sv
+read_file -type verilog ../src/bridge_split.sv
+read_file -type verilog ../src/bridge_combine.sv
+read_file -type verilog ../src/zeroskip.sv
+
+read_file -type verilog ../src/zeroskip_pipe_wrapper_MAC64.sv
+#read_file -type verilog ../src/zeroskip_pipe_wrapper_MAC256.sv
+#read_file -type verilog ../src/zeroskip_pipe_wrapper_MAC1024.sv
+
+
+##Common Options Section
+
+set_option projectwdir .
+set_option language_mode mixed
+set_option designread_enable_synthesis yes
+set_option designread_disable_flatten no
+set_option active_methodology $SPYGLASS_HOME/GuideWare/latest/block/rtl_handoff
+set_option enableSV yes
+
+set_option top zeroskip_pipe_wrapper_MAC64
+set_option incdir ../src/
+
+##Goal Setup Section
+
+current_methodology $SPYGLASS_HOME/GuideWare/latest/block/rtl_handoff
+
