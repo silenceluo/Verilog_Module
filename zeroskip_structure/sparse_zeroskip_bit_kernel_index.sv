@@ -3,9 +3,10 @@ module tensor sparse_zeroskip_bit_kernel_index #(
             BIT_GROUPSIZE = 16，      // Bit Mask,group size 16
             DATA_W        = FP16_W,
             N             = 8         // Zeroskip in group, each matrix N groups are sharing the same cmap
-)（
+)(
   input logic   [BIT_GROUPSIZE-1 : 0]                             cmap,
   output logic  [BIT_NONZERO-1 : 0][$clog2(BIT_GROUPSIZE)-1 : 0]  nz_index
+);
 
 logic [BIT_NONZERO-1 : 0][BIT_GROUPSIZE - BIT_NONZERO : 0]  mask;
 logic [BIT_NONZERO-1 : 0][BIT_GROUPSIZE - BIT_NONZERO : 0]  mask_lsb;
