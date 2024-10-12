@@ -50,22 +50,16 @@ always_comb begin
 
     if(reading) begin
       raddr_d = raddr_q + 1;
-    end else begin
-      raddr_d = raddr_q;
     end
     
     if(writing) begin
       waddr_d = waddr_q + 1;
-    end else begin
-      waddr_d = waddr_q;
     end  
 
     if (writing && !reading) begin
       count_d = count_q + 1;
     end else if (reading && !writing) begin
       count_d = count_q - 1;
-    end else begin
-      count_d = count_q;
     end
   end
 end
