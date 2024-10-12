@@ -27,13 +27,13 @@ int main(int argc, char** argv, char** env) {
 
 
 
-//    while (!Verilated::gotFinish()) {
+    // while (!Verilated::gotFinish()) {
     while(main_time < 100) {
         top->clk    = main_time % 2;
         top->rst_n  = (main_time < 5) ? 0 : 1;
         top->wen    = (main_time < 10) ? 0 : 1;
-        top->ren    = (main_time < 15) ? 0 : 1;
-        top->wdata  = main_time%256;
+        top->ren    = (main_time < 30) ? 0 : 1;
+        top->wdata  = (main_time/2)%256;
         
         top->eval();
         tfp->dump(main_time);
